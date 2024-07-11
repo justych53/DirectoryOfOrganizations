@@ -1,0 +1,126 @@
+﻿@model IEnumerable<DirectoryOrganizations.Models.Organization>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Справочник</title>
+    <meta charset="utf-8" />
+    <style>
+        .sidebar {
+            width:280px;
+            height:750px;
+            border:1px solid black;
+            float:left;
+        }
+        .map {
+            width:1220px;
+            height:750px;
+            border:1px solid black;
+            margin-left:300px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://openweathermap.org/js/leaflet-layer.js"></script>
+</head>
+<body>
+    <h2>Справочник организаций</h2>
+    <label>На данном сайте вы можете разместить/изменить/удалить информацию о существующих в городе организациях</label>
+    <form method="post" action="Categories">
+        <p>
+        <label>Категории организаций</label><br />
+        <input type="submit" value="Открыть категории"/>
+        </p>
+        </form>
+    <form method="post" action="Addresses">
+        <p>
+            <label>Адреса</label><br />
+            <input type="submit" value="Открыть адреса"/>
+        </p>
+    </form>
+        <form method="post" action="Organizations">
+        <p>
+            <label>Организации</label><br />
+            <input type="submit" value="Открыть организации" />
+        </p>
+    </form>
+    <form method="post" action="Branches">
+        <p>
+            <label>Филиалы организаций</label><br />
+            <input type="submit" value="Открыть филиалы" />
+        </p>
+    </form>
+    <div class="sidebar">
+        <label>Список организаций</label><br />
+        @foreach (var organization in Model)
+        {
+            <p>
+                <a data-orgid="@organization.Id" href="#" class="organization">@organization.Name - @organization.Category.Name</a>
+                <div id="@organization.Id">
+                    @foreach (var branch in organization.Branches)
+                    {
+                       <span data-lat="@branch.Latitude" data-long="@branch.Longitude">
+                           @branch.Address?.Location<br />
+                           Режим работы - @branch.WorkTime<br />
+                           Контактный телефон:<br /> @branch.Phone<br />
+                       </span>
+                       <br/>
+                    }
+                </div>
+                
+            </p>
+        }
+    </div>
+    <div id="map" class="map"></div>
+    <script type="text/javascript">
+var
+  osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  osmAttribution = 'Map data <a target="_blank" href="http://www.openstreetmap.org">OpenStreetMap.org</a>' +
+    ' contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+  osmLayer = new L.TileLayer(osmUrl, {
+      maxZoom: 18,
+      attribution: osmAttribution
+    }),
+  weatherLayer = new OsmJs.Weather.LeafletLayer({
+      lang: 'ru'
+    }),
+  baseMaps = {"OpenStreetMap": osmLayer},
+  overlayMaps = {"Метеоданные": weatherLayer},
+  layersControl = new L.Control.Layers(baseMaps, overlayMaps),
+  map = new L.Map('map', {
+      center: new L.LatLng(48.4574, 135.1813),
+      zoom: 11,
+      layers: [osmLayer]
+    }),
+  popup = new L.Popup();
+map.addControl(layersControl);
+map.on('click', (e) => {
+    popup.setLatLng(e.latlng);
+
+    
+    map.openPopup(popup);
+  });
+  $("a.organization").on("click", function(e){
+      map.eachLayer((layer) => {
+          if (layer instanceof L.Marker) {
+             layer.remove();
+          }
+        });
+      var orgid = $(this).data("orgid");
+            $("div#"+orgid).each(function( index ) {
+                $(this).children("span").each(function(i,e)  {
+                    var lat = $(e).data("lat").replace(",",".");
+                    var long = $(e).data("long").replace(",",".");
+                    var mp = new L.Marker([lat, long]).addTo(map);
+                });
+
+              
+            });            
+        });
+    </script>
+
+    <script>
+        
+    </script>
+</body>
+</html>

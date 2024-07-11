@@ -1,0 +1,13 @@
+﻿@model DirectoryOrganizations.Models.Category
+
+<h2>Добавление категории</h2>
+<form asp-action="create" asp-controller="Categories">
+	<p>
+		<label asp-for="Name">Наименование категории</label><br />
+			<input type="text" asp-for="Name" />
+			<input hidden type="number" asp-for="Id" />
+	</p>
+	<p>
+		<input type="submit" value="Отправить"/>
+	</p>
+</form>

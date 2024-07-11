@@ -1,0 +1,13 @@
+﻿@model DirectoryOrganizations.Models.Address
+
+<h2>Добавление адреса</h2>
+<form asp-action="create" asp-controller="Addresses">
+	<p>
+		<label asp-for="Location">Адрес</label><br />
+		<input type="text" asp-for="Location" />
+		<input hidden type="number" asp-for="Id" />
+	</p>
+	<p>
+		<input type="submit" value="Отправить" />
+	</p>
+</form>

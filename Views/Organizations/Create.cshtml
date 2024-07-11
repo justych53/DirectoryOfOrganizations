@@ -1,0 +1,26 @@
+﻿@model DirectoryOrganizations.Models.Organization
+
+<h2>Добавление организации</h2>
+<form asp-action="create" asp-controller="Organizations">
+	<input hidden type="number" asp-for="Id" />
+	<p>
+		<label asp-for="Name">Наименование</label><br />
+		<input type="text" asp-for="Name" />
+	</p>
+	<p>
+		<label asp-for="FullName">Полное наименование</label><br />
+		<input type="text" asp-for="FullName" />
+	</p>
+	<p>
+		<label asp-for="CategoryId">Категория</label><br />
+		<select asp-for="CategoryId">
+			@foreach (var category in ViewBag.Categories)
+			{
+				<option value="@category.Id">@category.Name</option>
+			}
+		</select>
+	</p>
+	<p>
+		<input type="submit" value="Отправить" />
+	</p>
+</form>

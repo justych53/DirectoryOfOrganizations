@@ -1,0 +1,13 @@
+﻿@model DirectoryOrganizations.Models.Category
+
+<h2>Редактирование категории</h2>
+<form asp-action="edit" asp-controller="categories" asp-route-id="@Model.Id">
+	<p>
+		<label asp-for="Name">Наименование</label><br />
+		<input type="text" asp-for="Name" />
+	</p>
+	<p>
+		<input type="submit" value="Сохранить" />
+	</p>
+</form>
+

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DirectoryOrganizations.Models.Organization>
+
+
+<h2>Список организаций</h2>
+<p><a asp-action="Create">Добавить организацию</a> </p>
+<table class="table">
+	<tr><th>ID</th><th>Наименование</th><th>Полное наименование</th><th>Категория</th></tr>
+	@foreach (var organization in Model)
+	{
+		<tr>
+			<td>@organization.Id</td>
+			<td>@organization.Name</td>
+			<td>@organization.FullName</td>
+			<td>@organization.Category.Name</td>
+			<td>
+				<form asp-action="Edit" asp-controller="Organizations" method="get" asp-route-id="@organization.Id">
+					<input type="submit" value="Изменить" />
+				</form>
+			</td>
+			<td>
+				<form asp-controller="Organizations" asp-action="Delete" method="post" asp-route-id="@organization.Id">
+					<input type="submit" value="Удалить" />
+				</form>
+			</td>
+		</tr>
+	}
+</table>
+<form method="post" asp-controller="Organizations" asp-action="Back">
+	<p>
+		<input type="submit" value="Вернуться на главную" />
+	</p>
+</form>

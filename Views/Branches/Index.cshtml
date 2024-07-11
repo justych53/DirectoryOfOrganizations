@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DirectoryOrganizations.Models.Branch>
+
+
+<h2>Список филиалов</h2>
+<p><a asp-action="Create">Добавить филиал</a> </p>
+<table class="table">
+	<tr><th>ID</th><th>Режим работы</th><th>Телефон</th><th>Широта</th><th>Долгота</th><th>Адрес</th><th>Организация</th></tr>
+	@foreach (var branch in Model)
+	{
+		<tr>
+			<td>@branch.Id</td>
+			<td>@branch.WorkTime</td>
+			<td>@branch.Phone</td>
+			<td>@branch.Latitude</td>
+			<td>@branch.Longitude</td>
+			<td>@branch.Address.Location</td>
+			<td>@branch.Organization.Name</td>
+
+			<td>
+				<form asp-action="Edit" asp-controller="Branches" method="get" asp-route-id="@branch.Id">
+					<input type="submit" value="Изменить" />
+				</form>
+			</td>
+			<td>
+				<form asp-controller="Branches" asp-action="Delete" method="post" asp-route-id="@branch.Id">
+					<input type="submit" value="Удалить" />
+				</form>
+			</td>
+		</tr>
+	}
+</table>
+<form method="post" asp-controller="Branches" asp-action="Back">
+	<p>
+		<input type="submit" value="Вернуться на главную" />
+	</p>
+</form>

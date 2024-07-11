@@ -1,0 +1,42 @@
+﻿@model DirectoryOrganizations.Models.Branch
+
+<h2>Редактирование филиала</h2>
+<form asp-action="edit" asp-controller="branches" asp-route-id="@Model.Id">
+	<p>
+		<label asp-for="WorkTime">Режим работы</label><br />
+		<input type="text" asp-for="WorkTime" />
+	</p>
+	<p>
+		<label asp-for="Phone">Телефон</label><br />
+		<input type="text" asp-for="Phone" />
+	</p>
+	<p>
+		<label asp-for="Latitude">Широта</label><br />
+		<input type="text" asp-for="Latitude" />
+	</p>
+	<p>
+		<label asp-for="Longitude">Долгота</label><br />
+		<input type="text" asp-for="Longitude" />
+	</p>
+	<p>
+		<label asp-for="AddressId">Адрес</label><br />
+		<select asp-for="AddressId">
+			@foreach (var address in ViewBag.Addresses)
+			{
+				<option value="@address.Id">@address.Location</option>
+			}
+		</select>
+	</p>
+	<p>
+		<label asp-for="OrganizationId">Организация</label><br />
+		<select asp-for="OrganizationId">
+			@foreach (var org in ViewBag.Organizations)
+			{
+				<option value="@org.Id">@org.Name</option>
+			}
+		</select>
+	</p>
+	<p>
+		<input type="submit" value="Сохранить" />
+	</p>
+</form>
